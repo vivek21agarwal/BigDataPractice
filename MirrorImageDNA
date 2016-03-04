@@ -89,3 +89,46 @@ public class MirrorImageDNA {
 
 
 }
+/*
+   Mapper Output
+===================
+Key = TGCA, Value = User1
+
+  Mapper Output
+===================
+Key = TGCA, Value = User2
+
+  Mapper Output
+===================
+Key = GCA, Value = User3
+
+  Mapper Output
+===================
+Key = TGCA, Value = User4
+
+  Mapper Output
+===================
+Key = GCA, Value = User5
+
+  Mapper Output
+===================
+Key = TCGA, Value = User6
+
+   Reducer Input
+===================
+Key = TGCA Value = User1    User2    User4    
+Key = TCGA Value = User6    
+Key = GCA Value = User3    User5    
+
+   USERS with MirrorImage DNA -> TGCA/ACGT
+====================================
+User1    User2    User4    
+
+   USERS with MirrorImage DNA -> GCA/ACG
+====================================
+User3    User5    
+
+ * 
+ * 
+ * 
+*/
