@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;	
 import java.util.Map;
 
-public class AlgoDriver {
+public class Anagrams {
 	public static String inputText = "the cat act in tic tac toe";
 	public static Map<String, List <String>> keyValue = new HashMap<>();
 	
@@ -72,3 +72,47 @@ public class AlgoDriver {
 		}
 	}
 }
+/*
+ * 
+  Mapper Output
+===================
+Key = eht, Value = the
+
+  Mapper Output
+===================
+Key = act, Value = cat
+
+  Mapper Output
+===================
+Key = act, Value = act
+
+  Mapper Output
+===================
+Key = in, Value = in
+
+  Mapper Output
+===================
+Key = cit, Value = tic
+
+  Mapper Output
+===================
+Key = act, Value = tac
+
+  Mapper Output
+===================
+Key = eot, Value = toe
+
+   Reducer Input
+===================
+Key = eot Value = toe    
+Key = cit Value = tic    
+Key = eht Value = the    
+Key = act Value = cat    act    tac    
+Key = in Value = in    
+
+   ANAGRAMS
+==============
+Anagrams in input text   'the cat act in tic tac toe':
+cat    act    tac    
+
+ */
