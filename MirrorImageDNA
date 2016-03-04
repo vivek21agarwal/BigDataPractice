@@ -1,0 +1,91 @@
+package practice;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MirrorImageDNA {
+
+
+	public static List<String> inputList ;
+	public static Map<String, List <String>> keyValue = new HashMap<>();
+	
+	
+	public static void main(String[] args) {
+
+		doMapping();
+		reduce(keyValue);
+	}
+
+
+
+	private static void doMapping() {
+		// TODO Auto-generated method stub
+		inputList = new ArrayList<>();
+		inputList.add("User1 ACGT");
+		inputList.add("User2 TGCA");
+		inputList.add("User3 ACG");
+		inputList.add("User4 ACGT");
+		inputList.add("User5 ACG");
+		inputList.add("User6 AGCT");
+		
+//		String[] words  = inputText.split("\\s"); //Split the input line into words
+		for (String eachWord : inputList) {
+			String keyString = "";
+			String[] userDNASplit =	eachWord.split("\\s");
+			StringBuilder reverseString = new StringBuilder(userDNASplit[1]);
+			//reverse the strings and compare them lexically
+			reverseString.reverse().toString(); 
+			if(reverseString.toString() .compareTo(userDNASplit[1]) > 0){
+				keyString = reverseString.toString();
+			}
+			else
+				keyString = userDNASplit[1].toString();
+			
+			System.out.println("\n  Mapper Output");
+			System.out.println("===================");
+			System.out.println("Key = " +keyString + ", Value = " + userDNASplit[0]);
+		    List<String> userList = new ArrayList<>();
+			userList.add(userDNASplit[0]);
+			if (keyValue.containsKey(keyString)){
+				keyValue.get(keyString).add(userDNASplit[0]);
+			}else
+			keyValue.put(keyString, userList);
+		}
+		System.out.println("\n   Reducer Input");
+		System.out.println("===================");
+		printMap(keyValue);
+	}
+
+	private static void printMap(Map<String, List<String>> keyValue) {
+		// TODO Auto-generated method stub
+		for (Map.Entry<String,List<String>> entry : keyValue.entrySet()){
+			System.out.print("Key = " + entry.getKey() );
+			String values = "";
+			for (String valueList : entry.getValue()) {
+				values  = values + valueList +"    ";
+			}
+			System.out.println(" Value = " + values );
+		}
+	}
+
+	private static void reduce(Map<String,  List<String>> reduceInput) {
+		// TODO Auto-generated method stub
+		for (Map.Entry<String,List<String>> entry : keyValue.entrySet()){
+			if(entry.getValue().size() > 1)
+			{
+				System.out.println("\n   USERS with MirrorImage DNA -> " + entry.getKey() + "/"+new StringBuilder(entry.getKey()).reverse());
+				System.out.println("====================================" );
+				String values = "";
+				for (String valueList : entry.getValue()) {
+					values  = values + valueList +"    ";
+				}
+				System.out.println(values );
+			}
+		}
+	}
+
+
+
+}
