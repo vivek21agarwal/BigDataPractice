@@ -1,0 +1,74 @@
+package practice;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;	
+import java.util.Map;
+
+public class AlgoDriver {
+	public static String inputText = "the cat act in tic tac toe";
+	public static Map<String, List <String>> keyValue = new HashMap<>();
+	
+	
+	public static void main(String[] args) {
+
+		doMapping();
+		reduce(keyValue);
+	}
+
+
+
+	private static void doMapping() {
+		// TODO Auto-generated method stub
+		
+		String[] words  = inputText.split("\\s"); //Split the input line into words
+		for (String eachWord : words) {
+			char[] characters =	eachWord.toCharArray(); //split each word into character array
+			Arrays.sort(characters);
+			String sortedWord = new String(characters);
+			System.out.println("\n  Mapper Output");
+			System.out.println("===================");
+			System.out.println("Key = " + sortedWord + ", Value = " + eachWord);
+		    List<String> wordList = new ArrayList<>();
+			wordList.clear();
+			wordList.add(eachWord);
+			if (keyValue.containsKey(sortedWord)){
+				keyValue.get(sortedWord).add(eachWord);
+			}else
+			keyValue.put(sortedWord, wordList);
+		}
+		System.out.println("\n   Reducer Input");
+		System.out.println("===================");
+		printMap(keyValue);
+	}
+
+	private static void printMap(Map<String, List<String>> keyValue) {
+		// TODO Auto-generated method stub
+		for (Map.Entry<String,List<String>> entry : keyValue.entrySet()){
+			System.out.print("Key = " + entry.getKey() );
+			String values = "";
+			for (String valueList : entry.getValue()) {
+				values  = values + valueList +"    ";
+			}
+			System.out.println(" Value = " + values );
+		}
+	}
+
+	private static void reduce(Map<String,  List<String>> reduceInput) {
+		// TODO Auto-generated method stub
+		for (Map.Entry<String,List<String>> entry : keyValue.entrySet()){
+			if(entry.getValue().size() > 1)
+			{
+				System.out.println("\n   ANAGRAMS" );
+				System.out.println("==============" );
+				System.out.print("Anagrams in input text   '" + inputText +"':\n" );
+				String values = "";
+				for (String valueList : entry.getValue()) {
+					values  = values + valueList +"    ";
+				}
+				System.out.println(values );
+			}
+		}
+	}
+}
