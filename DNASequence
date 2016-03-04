@@ -78,3 +78,44 @@ public class DNASequence {
 	}
 
 }
+/*
+ 
+  Mapper Output
+===================
+Key = ACGT, Value = User1
+
+  Mapper Output
+===================
+Key = TGCA, Value = User2
+
+  Mapper Output
+===================
+Key = ACG, Value = User3
+
+  Mapper Output
+===================
+Key = ACGT, Value = User4
+
+  Mapper Output
+===================
+Key = ACG, Value = User5
+
+  Mapper Output
+===================
+Key = AGCT, Value = User6
+
+   Reducer Input
+===================
+Key = TGCA Value = User2    
+Key = ACGT Value = User1    User4    
+Key = ACG Value = User3    User5    
+Key = AGCT Value = User6    
+
+   USERS with Same DNA -> ACGT
+====================================
+User1    User4    
+
+   USERS with Same DNA -> ACG
+====================================
+User3    User5   
+ */
