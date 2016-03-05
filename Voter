@@ -1,0 +1,220 @@
+package practice;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Voting {
+
+
+	public static List<String> inputList;
+	public static List<String> list2;
+	public static List<String> mergedList;
+//	public static List<String> reduceList1;
+	public static Map<String, List <String>> keyValue = new HashMap<>();
+	public static Map<String, String> map1 = new HashMap<>();
+	public static Map<String, String> mapWorth ;
+	public static void main(String[] args) {
+
+		doMapping1();
+		reduce(keyValue);
+		doMapping2(map1);
+		reduce2(mapWorth);
+	}
+
+
+
+	private static void reduce2(Map<String, String> mapWorth2) {
+		for (Map.Entry<String,String> entry : mapWorth2.entrySet()){
+			System.out.println(" Voter and Worth Output");
+			System.out.println(" =======================");
+//			System.out.println("Key = " + entry.getKey() );
+//			System.out.println("Value = " + entry.getValue() );	
+			
+			String[] splitWorth = entry.getValue().split(",");
+			int totalWorth = 0 ;
+			for (int i = 0; i < splitWorth.length; i++) {
+				totalWorth =totalWorth + Integer.parseInt(splitWorth[i]);
+				
+			}
+			System.out.println("For Voter = " + entry.getKey() +" total worth is -> "+ totalWorth);
+		}
+	}
+
+
+
+	private static void doMapping2(Map<String,  String> map2Input) {
+		mapWorth = new HashMap<>();
+		
+		for (Map.Entry<String,String> entry : map2Input.entrySet()){
+			if(mapWorth.containsKey(entry.getKey()))
+				mapWorth.put(entry.getKey(),	mapWorth.get(entry.getKey())+","+"0");
+			else
+				mapWorth.put(entry.getKey(), "0");
+			String[] arraySplit=	entry.getValue().split("\\s");
+			if(arraySplit.length == 1){
+				if(!arraySplit[0].matches("-?\\d+(\\.\\d+)?")){
+					
+					mapWorth.put(arraySplit[0], "0");
+				}
+			}
+			else{		
+			for (int i = 1; i < arraySplit.length; i++) {
+				if(mapWorth.containsKey(arraySplit[i]))
+					mapWorth.put(arraySplit[i],	mapWorth.get(arraySplit[i])+","+arraySplit[0]);
+				else
+				mapWorth.put(arraySplit[i], arraySplit[0]);
+			 }
+			}
+		}
+	}
+
+
+
+	private static void doMapping1() {
+		// TODO Auto-generated method stub
+		inputList = new ArrayList<>();
+		list2 = new ArrayList<>();
+		mergedList = new ArrayList<>();
+		inputList.add("A C");inputList.add("A B");inputList.add("B C");inputList.add("C F");inputList.add("F C");
+		
+		list2.add("A 5");list2.add("B 1");list2.add("C 11");list2.add("D 12");
+		
+		list2.addAll(inputList);
+		
+
+		for (String eachWord : list2) {
+			String[] voterVotee =	eachWord.split("\\s");
+						
+			System.out.println("\n  Mapper Output");
+			System.out.println("===================");
+			System.out.println("Key = " +voterVotee[0] + ", Value = " + voterVotee[1]);
+		    List<String> userList = new ArrayList<>();
+			userList.add(voterVotee[1]);
+			if (keyValue.containsKey(voterVotee[0])){
+				keyValue.get(voterVotee[0]).add(voterVotee[1]);
+			}else
+			keyValue.put(voterVotee[0], userList);
+		}
+		System.out.println("\n   Reducer Input");
+		System.out.println("===================");
+		printMap(keyValue);
+	}
+
+	private static void printMap(Map<String, List<String>> keyValue) {
+		// TODO Auto-generated method stub
+		for (Map.Entry<String,List<String>> entry : keyValue.entrySet()){
+			System.out.print("Key = " + entry.getKey() );
+			String values = "";
+			for (String valueList : entry.getValue()) {
+				values  = values + valueList +" ";
+			}
+			map1.put(entry.getKey(), values);
+			System.out.println(" Value = " + values );
+		}
+	}
+
+	private static void reduce(Map<String,  List<String>> reduceInput) {
+		// TODO Auto-generated method stub
+		
+		for (Map.Entry<String,List<String>> entry : keyValue.entrySet()){
+				System.out.println("\n   Voter -> " + entry.getKey() + "   has Votees and Worth as :");
+				System.out.println("=============================================================" );
+				String values = "";
+				for (String valueList : entry.getValue()) {
+				values  = values + valueList +" ";			
+				}
+				System.out.println(values );
+		}
+	}
+
+
+
+
+
+}
+
+
+/*
+ *
+  Mapper Output
+===================
+Key = A, Value = 5
+
+  Mapper Output
+===================
+Key = B, Value = 1
+
+  Mapper Output
+===================
+Key = C, Value = 11
+
+  Mapper Output
+===================
+Key = D, Value = 12
+
+  Mapper Output
+===================
+Key = A, Value = C
+
+  Mapper Output
+===================
+Key = A, Value = B
+
+  Mapper Output
+===================
+Key = B, Value = C
+
+  Mapper Output
+===================
+Key = C, Value = F
+
+  Mapper Output
+===================
+Key = F, Value = C
+
+   Reducer Input
+===================
+Key = D Value = 12 
+Key = F Value = C 
+Key = A Value = 5 C B 
+Key = B Value = 1 C 
+Key = C Value = 11 F 
+
+   Voter -> D   has Votees and Worth as :
+=============================================================
+12 
+
+   Voter -> F   has Votees and Worth as :
+=============================================================
+C 
+
+   Voter -> A   has Votees and Worth as :
+=============================================================
+5 C B 
+
+   Voter -> B   has Votees and Worth as :
+=============================================================
+1 C 
+
+   Voter -> C   has Votees and Worth as :
+=============================================================
+11 F 
+ Voter and Worth Output
+ =======================
+For Voter = D total worth is -> 0
+ Voter and Worth Output
+ =======================
+For Voter = F total worth is -> 11
+ Voter and Worth Output
+ =======================
+For Voter = A total worth is -> 0
+ Voter and Worth Output
+ =======================
+For Voter = B total worth is -> 5
+ Voter and Worth Output
+ =======================
+For Voter = C total worth is -> 6
+ 
+*/
